@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Web MVC - Master Study Notes</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-bg: #eff6ff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --code-bg: #f8fafc;
+            --border: #e2e8f0;
+            --success: #16a34a;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Kantumruy Pro", "Battambang", sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+            background: #ffffff;
+        }
+        h1, h2, h3, h4 {
+            color: #0f172a;
+            font-weight: 700;
+        }
+        h1 {
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        h2 {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+            margin-top: 2rem;
+            color: var(--primary);
+        }
+        code {
+            background: #f1f5f9;
+            color: #d97706;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background: #0f172a;
+            color: #f8fafc;
+            padding: 1.25rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+        th {
+            background: #f8fafc;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background: #fbfcfe;
+        }
+        .card {
+            background: #f8fafc;
+            border-left: 4px solid var(--primary);
+            padding: 1rem 1.25rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .badge {
+            display: inline-block;
+            background: var(--primary-bg);
+            color: var(--primary);
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85em;
+        }
+        @media print {
+            body { max-width: 100%; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🚀 Spring Boot Web MVC - Master Study Notes</h1>
+    <p><strong>Course:</strong> ISTAD Year 2 | <strong>Topic:</strong> Architecture, Code Flow & Keys Cheat Sheet</p>
+
+    <div class="card">
+        <strong>💡 Note:</strong> អ្នកអាចចុច <code>Ctrl + P</code> ក្នុង Browser ដើម្បី Print ឬ Save ជា <strong>PDF</strong> ទុកមើលលើទូរស័ព្ទដៃបាន!
+    </div>
+
+    <h2>1. The 6-Step Coding Order (លំដាប់លំដោយពេលសរសេរកូដ)</h2>
+    <p>ពេលបង្កើត Feature ថ្មី ត្រូវសរសេរតាមលំដាប់នេះជានិច្ច៖</p>
+    <ol>
+        <li><strong>Domain Entity:</strong> កំណត់ Table ក្នុង Database (ឧ. <code>Product.java</code>)</li>
+        <li><strong>Repository:</strong> Interface extends <code>JpaRepository</code></li>
+        <li><strong>DTOs:</strong> បង្កើត Request និង Response Records</li>
+        <li><strong>Service Interface:</strong> កំណត់ឈ្មោះ Methods</li>
+        <li><strong>Service Implementation:</strong> សរសេរ Business Logic & Save to DB</li>
+        <li><strong>Controller:</strong> បង្កើត REST Endpoints (<code>@GetMapping</code>, <code>@PostMapping</code>, etc.)</li>
+    </ol>
+
+    <h2>2. The 5 Core Layers Explained (ស្រទាប់ទាំង ៥ នៃស្ថាបត្យកម្ម)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Layer</th>
+                <th>Package</th>
+                <th>តួនាទីសំខាន់ (Role)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Domain</strong></td>
+                <td><code>domain</code></td>
+                <td>ជា Blueprint បង្កើត PostgreSQL Table ដោយស្វ័យប្រវត្ត</td>
+            </tr>
+            <tr>
+                <td><strong>Repository</strong></td>
+                <td><code>repository</code></td>
+                <td>ជួយ execute SQL Queries ដោយស្វ័យប្រវត្ត (CRUD)</td>
+            </tr>
+            <tr>
+                <td><strong>DTO</strong></td>
+                <td><code>dto</code></td>
+                <td>ការពារទិន្នន័យ (Data Security) សម្រាប់ទទួល និងបោះទិន្នន័យទៅ Client</td>
+            </tr>
+            <tr>
+                <td><strong>Service</strong></td>
+                <td><code>service</code></td>
+                <td>ខួរក្បាលនៃប្រព័ន្ធ (Business Logic, Validation, DTO Mapping)</td>
+            </tr>
+            <tr>
+                <td><strong>Controller</strong></td>
+                <td><code>controller</code></td>
+                <td>អ្នកទទួលភ្ញៀវ — ទទួល HTTP Request និងបោះ JSON Response</td>
+            </tr>
+            <tr>
+                <td><strong>Exception</strong></td>
+                <td><code>exception</code></td>
+                <td>ចាប់ Error ទូទាំងប្រព័ន្ធ ហើយរៀបចំ Response ស្អាត</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>3. The Essential Annotations Cheat Sheet (កម្រង Annotations សំខាន់ៗ)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Annotation</th>
+                <th>កន្លែងប្រើ</th>
+                <th>អត្ថន័យ និងតួនាទី</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>@Entity</code></td>
+                <td>domain</td>
+                <td>ប្រាប់ Spring ថា class នេះជា Database Table</td>
+            </tr>
+            <tr>
+                <td><code>@Id</code></td>
+                <td>domain</td>
+                <td>កំណត់ Primary Key</td>
+            </tr>
+            <tr>
+                <td><code>@GeneratedValue(IDENTITY)</code></td>
+                <td>domain</td>
+                <td>Auto-increment លេខកើនស្វ័យប្រវត្ត (1, 2, 3...)</td>
+            </tr>
+            <tr>
+                <td><code>@RequiredArgsConstructor</code></td>
+                <td>controller / service</td>
+                <td>Lombok បង្កើត Constructor សម្រាប់ Inject <code>final</code> fields</td>
+            </tr>
+            <tr>
+                <td><code>@RestController</code></td>
+                <td>controller</td>
+                <td>ប្រាប់ថា class ជា Controller និង return JSON ស្វ័យប្រវត្ត</td>
+            </tr>
+            <tr>
+                <td><code>@RequestMapping</code></td>
+                <td>controller</td>
+                <td>Base URL (ឧទាហរណ៍ <code>/api/v1/products</code>)</td>
+            </tr>
+            <tr>
+                <td><code>@PathVariable</code></td>
+                <td>controller</td>
+                <td>ចាប់យកតម្លៃពី URL Path (ឧ. <code>/products/{code}</code>)</td>
+            </tr>
+            <tr>
+                <td><code>@RequestParam</code></td>
+                <td>controller</td>
+                <td>ចាប់យក Query Param (ឧ. <code>?pageNumber=0&pageSize=5</code>)</td>
+            </tr>
+            <tr>
+                <td><code>@RequestBody</code></td>
+                <td>controller</td>
+                <td>បម្លែង JSON Body ពី Client មកជា Java Object</td>
+            </tr>
+            <tr>
+                <td><code>@Valid</code></td>
+                <td>controller</td>
+                <td>បញ្ជាឲ្យ Spring ដំណើរការ Bean Validation</td>
+            </tr>
+            <tr>
+                <td><code>@RestControllerAdvice</code></td>
+                <td>exception</td>
+                <td>Global Exception Handler សម្រាប់ចាប់ Error ទូទាំង App</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>4. Advanced Features Summary</h2>
+    <h3>Pagination (ការចែកទំព័រ):</h3>
+    <pre><code>Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("name").ascending());
+Page&lt;Product&gt; productPage = productRepository.findAll(pageable);
+return productPage.map(productMapper::productToProductResponse);</code></pre>
+
+    <h3>Custom Code Generation:</h3>
+    <pre><code>int randomNumber = new java.util.Random().nextInt(90000) + 10000;
+product.setCode("ISTAD-PRO-" + randomNumber);</code></pre>
+
+    <h2>5. Spring Security Master Guide (មេរៀនសង្ខេប Spring Security ពេញលេញ)</h2>
+    
+    <div class="note-box" style="border-left: 4px solid #ef4444; background: #fef2f2; padding: 1rem; border-radius: 6px; margin: 1.5rem 0;">
+        <strong style="color: #b91c1c;">⚠️ ចំណុចគ្រឹះដែលត្រូវចាំ៖</strong><br>
+        • <strong>Authentication ("Who are you?"):</strong> ផ្ទៀងផ្ទាត់ Username & Password (ខុសធ្លាក់ <code>401 Unauthorized</code>)<br>
+        • <strong>Authorization ("What can you do?"):</strong> ត្រួតពិនិត្យសិទ្ធិ Role (គ្មានសិទ្ធិធ្លាក់ <code>403 Forbidden</code>)
+    </div>
+
+    <h3>A. Request Flow ពេល Client ហៅ Basic Auth:</h3>
+    <ol style="line-height: 2;">
+        <li>Client ផ្ញើ Request ជាមួយ Header <code>Authorization: Basic ...</code></li>
+        <li><code>SecurityFilterChain</code> ចាប់យក Request បញ្ជូនទៅ <code>DaoAuthenticationProvider</code></li>
+        <li><code>DaoAuthenticationProvider</code> ហៅ <code>UserDetailServiceImpl.loadUserByUsername()</code></li>
+        <li><code>UserRepository</code> ទាញយក <code>User</code> Entity ពី PostgreSQL Database</li>
+        <li><code>BCryptPasswordEncoder</code> ផ្ទៀងផ្ទាត់ Raw Password ជាមួយ BCrypt Hash ក្នុង DB</li>
+        <li>បើត្រូវគ្នា ➡️ រក្សាទុកក្នុង <code>SecurityContextHolder</code> រួចអនុញ្ញាតឱ្យចូលដល់ <code>UserController</code></li>
+        <li>ក្នុង Controller ប្រើ <code>(User) auth.getPrincipal()</code> ដើម្បីទាញយកទិន្នន័យ User</li>
+    </ol>
+
+    <h3>B. លំដាប់លំដោយ ៧ ជំហានពេលសរសេរកូដ (Coding Workflow):</h3>
+    <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; margin: 1rem 0;">
+        <strong>1. <code>PasswordEncoderConfig.java</code></strong> ➡️ បង្កើត <code>@Bean PasswordEncoder</code> (return <code>new BCryptPasswordEncoder()</code>)<br>
+        <strong>2. <code>Role.java</code></strong> ➡️ <code>implements GrantedAuthority</code> (return <code>"ROLE_" + this.name</code>)<br>
+        <strong>3. <code>User.java</code></strong> ➡️ <code>implements UserDetails</code> (return <code>this.userName</code>, <code>this.encryptedPassword</code>, <code>this.roles</code>)<br>
+        <strong>4. <code>UserRepository.java</code></strong> ➡️ Method <code>findByUserNameOrEmail(...)</code><br>
+        <strong>5. <code>UserDetailServiceImpl.java</code></strong> ➡️ <code>@Service</code> + <code>implements UserDetailsService</code><br>
+        <strong>6. <code>SecurityConfig.java</code></strong> ➡️ Config <code>DaoAuthenticationProvider</code> & <code>SecurityFilterChain</code><br>
+        <strong>7. <code>UserResponse.java</code> & <code>UserController.java</code></strong> ➡️ DTO ជាមួយ <code>@Builder</code> និង Endpoint <code>@GetMapping("/me")</code>
+    </div>
+
+    <h3>C. កម្រង Annotations & Classes សំខាន់ៗបំផុត (Cheat Sheet):</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ឈ្មោះ (Name)</th>
+                <th>តួនាទី (Responsibility)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>@EnableWebSecurity</code></td>
+                <td>បើកដំណើរការ Web Security របស់ Spring Boot</td>
+            </tr>
+            <tr>
+                <td><code>PasswordEncoder</code></td>
+                <td>Interface សម្រាប់ Hash និងផ្ទៀងផ្ទាត់ Password (<code>BCryptPasswordEncoder</code>)</td>
+            </tr>
+            <tr>
+                <td><code>UserDetails</code></td>
+                <td>Interface តំណាងឱ្យទិន្នន័យ User របស់ Spring Security (<code>User.java</code>)</td>
+            </tr>
+            <tr>
+                <td><code>GrantedAuthority</code></td>
+                <td>Interface តំណាងឱ្យ Role របស់ User (<code>ROLE_ADMIN</code>, <code>ROLE_BUSINESS</code>)</td>
+            </tr>
+            <tr>
+                <td><code>UserDetailsService</code></td>
+                <td>Interface សម្រាប់ Load User ចេញពី Database តាម Username</td>
+            </tr>
+            <tr>
+                <td><code>DaoAuthenticationProvider</code></td>
+                <td>អ្នកផ្គូផ្គងរវាង <code>UserDetailsService</code> និង <code>PasswordEncoder</code></td>
+            </tr>
+            <tr>
+                <td><code>SecurityFilterChain</code></td>
+                <td>Firewall កំណត់ច្បាប់ការពារ Endpoints, Stateless Session, និង CSRF</td>
+            </tr>
+            <tr>
+                <td><code>auth.getPrincipal()</code></td>
+                <td>ទាញយក Object User ដែលកំពុង Login ក្នុង Controller</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>D. កំហុសទាំង ៦ ដែលតែងតែជួបប្រទះ (Pitfalls to Avoid ⚠️):</h3>
+    <ul style="color: #991b1b; line-height: 2;">
+        <li>❌ <strong>Password ក្នុង Database ជា Plain text:</strong> ត្រូវតែជា BCrypt Hash (ផ្ដើមដោយ <code>$2a$10$...</code>)។</li>
+        <li>❌ <strong>ច្រឡំ Database Password ជាមួយ Login Password:</strong> <code>YourNewPassword123</code> ក្នុង <code>application.yaml</code> គឺជា Password របស់ PostgreSQL ទេ។</li>
+        <li>❌ <strong>Method <code>getUsername()</code> return <code>""</code>:</strong> ត្រូវតែ <code>return this.userName;</code>។</li>
+        <li>❌ <strong>ភ្លេច Prefix <code>ROLE_</code>:</strong> ក្នុង <code>Role.java</code> ត្រូវ return <code>"ROLE_" + this.name</code>។</li>
+        <li>❌ <strong>ភ្លេច <code>@Builder</code> លើ UserResponse:</strong> នាំឱ្យ error <code>cannot find symbol: method builder()</code>។</li>
+        <li>❌ <strong>ភ្លេច Restart Spring Boot:</strong> បង្កើត Controller ថ្មីរួចត្រូវ Restart ទើបស្គាល់ Endpoint (កុំឱ្យចេញ <code>404 Not Found</code>)។</li>
+    </ul>
+
+</body>
+</html>
